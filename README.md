@@ -229,12 +229,4 @@ Without an API key, the evaluator falls back to a heuristic word-overlap scorer 
 | Cost control         | Per-call cost in [app/services/cost.py](app/services/cost.py), daily cap, 429 on breach |
 | Container parity     | docker compose mirrors prod                                                   |
 
----
-
-## Talking points
-
-- "I built a complete RAG pipeline — PDF ingestion, semantic chunking with overlap, sentence-transformers embeddings, pgvector cosine search, cross-encoder reranking, Claude with structured JSON output."
-- "Wrote a cross-dialect Vector column so unit tests use SQLite (no pgvector needed in CI) but production runs full pgvector with `<=>` ANN."
-- "Eval framework gates deploys — CI fails if faithfulness drops below 0.7."
-- "Tests don't touch the network — fake embedder, fake reranker, mocked Anthropic, SQLite + FakeRedis. 19 tests, ~3 seconds."
 # fastAPi-LLM-paper-RAG-api
