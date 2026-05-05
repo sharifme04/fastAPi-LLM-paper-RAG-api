@@ -42,7 +42,59 @@ Query flow:
 
 ---
 
-## Project layout
+## Tech Stack
+
+| Component | Technology |
+|-----------|-----------|
+| Backend | FastAPI + Uvicorn |
+| Database | PostgreSQL + pgvector extension + asyncpg |
+| Vector DB | pgvector (native to PostgreSQL) |
+| Cache | Redis (query result caching) |
+| ORM | SQLAlchemy 2.0 (async) + custom Vector column |
+| Embeddings | sentence-transformers/all-MiniLM-L6-v2 (384-dim, fast, accurate) |
+| Re-ranking | sentence-transformers cross-encoder/ms-marco-MiniLM-L-6-v2 |
+| Document Parsing | pymupdf (fitz) — robust PDF text extraction |
+| LLM | Anthropic Claude Sonnet |
+| Validation | Pydantic v2 + pydantic-settings |
+| Evaluation | ragas (Retrieval-Augmented Generation Evaluation) |
+| Rate Limiting | slowapi |
+| Testing | pytest + pytest-asyncio |
+| Logging | python-json-logger (structured JSON) |
+| Containerisation | Docker Compose |
+
+## Features
+
+- ✅ **PDF Upload & Ingestion** — Parse PDFs, extract text, validate content automatically
+- ✅ **Semantic Chunking** — Split on sentence boundaries with configurable overlap (512 tokens, 100-token overlap)
+- ✅ **Vector Embeddings** — Generate and store 384-dim embeddings in pgvector
+- ✅ **Similarity Search** — pgvector cosine similarity → top-10 candidates
+- ✅ **Cross-Encoder Re-ranking** — Rerank candidates with MS MARCO cross-encoder → top-5 quality chunks
+- ✅ **Grounded Answer Generation** — Claude generates answers with structured citations (document, page, chunk_id)
+- ✅ **Redis Query Caching** — Cache full answers for 1 hour (hash of question as key)
+- ✅ **Cost Tracking** — Per-query token usage, daily budget limits, cost alerts
+- ✅ **Evaluation Framework** — ragas metrics (faithfulness, relevance, citation accuracy) gated in CI
+- ✅ **Analytics Dashboard** — Per-document stats, cost summary, cache hit rate
+- ✅ **Structured Logging** — JSON logs with request_id, retrieval scores
+- ✅ **Health Checks** — Verify DB + pgvector extension + Redis connectivity
+- ✅ **Feedback Collection** — Users mark answers as helpful/incorrect for eval improvement
+
+## API Endpoints
+
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/health` | Health check (DB + pgvector + Redis status) |
+| POST | `/documents/upload` | Upload a PDF document |
+| GET | `/documents` | List all uploaded documents |
+| GET | `/documents/{id}` | Get document metadata + chunk count |
+| DELETE | `/documents/{id}` | Delete document (cascade deletes chunks) |
+| POST | `/query` | Ask a question, get grounded answer with citations |
+| GET | `/query/{id}` | Retrieve past query + answer + sources |
+| POST | `/query/{id}/feedback` | Mark answer as helpful or incorrect |
+| GET | `/analytics/summary` | Per-document + cost summary |
+| GET | `/evals/report` | Eval scores (faithfulness, relevance, citation) |
+| POST | `/evals/run` | Trigger eval suite on golden dataset |
+
+---
 
 ```
 project-3-paper-rag-api/
