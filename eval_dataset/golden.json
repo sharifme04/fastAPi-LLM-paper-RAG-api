@@ -1,0 +1,17 @@
+[
+  {
+    "question": "What is the role of attention in transformers?",
+    "expected_answer": "Attention allows the model to weigh the relative importance of different tokens when producing a representation. In the Transformer architecture, scaled dot-product attention computes weights from query and key vectors, and applies them to value vectors.",
+    "expected_chunk_keywords": ["attention", "query", "key", "value", "softmax"]
+  },
+  {
+    "question": "Why is layer normalization used in deep networks?",
+    "expected_answer": "Layer normalization stabilizes training by normalizing activations across the feature dimension for each example. It reduces sensitivity to initialization and learning rate.",
+    "expected_chunk_keywords": ["layer normalization", "stabilize", "training", "activations"]
+  },
+  {
+    "question": "What is the difference between SEM and TEM imaging?",
+    "expected_answer": "SEM (scanning electron microscopy) scans a focused electron beam across a specimen surface to image topography. TEM (transmission electron microscopy) transmits electrons through a thin sample to image internal structure at higher resolution.",
+    "expected_chunk_keywords": ["SEM", "TEM", "electron", "surface", "transmission"]
+  }
+]
